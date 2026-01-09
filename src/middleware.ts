@@ -145,6 +145,11 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // Fast path: URL already has a locale segment and cache cookie exists
+  if (looksLikeLocale && cacheIdCookie) {
+    return NextResponse.next();
+  }
+
   let response = NextResponse.next();
 
   // Ensure cache id cookie exists (set without redirect)
